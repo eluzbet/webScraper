@@ -1,4 +1,4 @@
-# webScraper
+# webScraper (WIP)
 This tool utilizes Jsoup to extract product information from websites, compares store prices with eBay SOLD prices, and calculates potential profitability for each product.
 
 Features:
