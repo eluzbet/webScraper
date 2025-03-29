@@ -1,4 +1,6 @@
 # webScraper
+This tool utilizes Jsoup to extract product information from websites, compares store prices with eBay SOLD prices, and calculates potential profitability for each product.
+
 Features:
 
 Grabs product data using Jsoup.
