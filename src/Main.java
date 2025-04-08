@@ -31,18 +31,24 @@ public class Main {
                 for (Element product : products) {
                     String name = product.select(".product_wrapper .h2 a").text(); //grab product name
 
+                    String sku = product.select(".sku").text(); //grabs product sku #
+
                     String priceText = product.select(".product_wrapper .price_wrapper .price > span[itemprop=price]").text(); //grabs product  retail price as String
                     double price = priceText.isEmpty() ? 0.0 : Double.parseDouble(priceText.replaceAll("[^0-9.]", "")); // parses to double
 
                     String clearanceText = product.select(".price-label.compareTo").text(); //grabs product clearance price as String
                     double clearancePrice = clearanceText.isEmpty() ? 0.0 : Double.parseDouble(clearanceText.replaceAll("[^0-9.]", ""));  // parses to double
 
-                    String sku = product.select(".sku").text(); //grabs product sku #
+                    double discount = Math.round(((price - clearancePrice) / price) * 1000) / 10.0;
+
+
+
 
                     System.out.println("Product Name: " + name);
                     System.out.println("SKU: " + sku);
                     System.out.println("Price: $" + price);
                     System.out.println("Clearance Price from: $" + clearancePrice);
+                    System.out.println("Discount: " + discount + "%");
                     System.out.println("---------------------------");
                 }
 
