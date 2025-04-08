@@ -10,37 +10,47 @@ import org.jsoup.select.Elements;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "https://www.microcenter.com/search/search_results.aspx?storeid=185&Ntk=all&prt=clearance&sortby=match&N=4294966998"; // Replace with actual store URL
+        String baseUrl = "https://www.microcenter.com/search/search_results.aspx?N=4294966998&prt=clearance&page=";
+        int storeId = 185; // store location
+        int page = 1; // page number
+        //default items per page = 24
 
         try {
-            // Fetch the webpage
-            Document doc = Jsoup.connect(url).get();
+            while (true) {
+                String url = baseUrl + page + "&storeid=" + storeId; //edits url based on page and store location
+                System.out.println("Fetching page: " + page);
+                Document doc = Jsoup.connect(url).get(); // fetches url's html content
 
-            // Select product elements (Modify the selectors based on the website structure)
-            Elements products = doc.select("#productGrid .product_wrapper");
+                Elements products = doc.select("#productGrid .product_wrapper"); //grabs products
 
+                if (products.isEmpty()) {
+                    System.out.println("No more products found. Exiting at page " + page);
+                    break;
+                }
 
-            for (Element product : products) {
-                String name = product.select(".product_wrapper .h2 a").text();
+                for (Element product : products) {
+                    String name = product.select(".product_wrapper .h2 a").text(); //grab product name
 
-                String priceText = product.select(".product_wrapper .price_wrapper .price > span[itemprop=price]").text();
-               // priceText = priceText.replaceAll("[^0-9.]", ""); used below
-                double price = Double.parseDouble(priceText.replaceAll("[^0-9.]", ""));
+                    String priceText = product.select(".product_wrapper .price_wrapper .price > span[itemprop=price]").text(); //grabs product  retail price as String
+                    double price = priceText.isEmpty() ? 0.0 : Double.parseDouble(priceText.replaceAll("[^0-9.]", "")); // parses to double
 
-                String clearanceText = product.select(".price-label.compareTo").text();
-                double clearancePrice = Double.parseDouble(clearanceText.replaceAll("[^0-9.]", ""));
+                    String clearanceText = product.select(".price-label.compareTo").text(); //grabs product clearance price as String
+                    double clearancePrice = clearanceText.isEmpty() ? 0.0 : Double.parseDouble(clearanceText.replaceAll("[^0-9.]", ""));  // parses to double
 
-                String sku = product.select(".sku").text();
+                    String sku = product.select(".sku").text(); //grabs product sku #
 
-                System.out.println("Product Name: " + name);
-                System.out.println(sku);
-                System.out.println("Price: $" + price);
-                System.out.println("Clearance Price from: $" + clearancePrice);
-                System.out.println("---------------------------");
+                    System.out.println("Product Name: " + name);
+                    System.out.println("SKU: " + sku);
+                    System.out.println("Price: $" + price);
+                    System.out.println("Clearance Price from: $" + clearancePrice);
+                    System.out.println("---------------------------");
+                }
+
+                page++;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("error");
+            System.out.println("Error.");
         }
     }
 }
