@@ -16,7 +16,7 @@ public class productScraper {
         this.storeId = storeId;
     }
 
-    public List<Product> scrapePages(){
+    public List<Product> scrapePages(){  //returns list in site order
         List<Product> productList = new ArrayList<>();
         int page = 1;
 
@@ -49,6 +49,10 @@ public class productScraper {
 
         return productList;
     }
+
+
+
+
 
 
 

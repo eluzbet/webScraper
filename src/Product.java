@@ -10,7 +10,7 @@ public class Product  {
 
 
     public Product(){
-        this("NO NAME", "NO SKU", 0.0,0.0, 0);
+        this("NO NAME", "NO SKU", -1,-1, -1);
 
 
     }
@@ -51,7 +51,7 @@ public class Product  {
 
 @Override
     public String toString(){
-        return String.format("Product Name: %s\nSKU: %s\nPrice: $%.2f\nClearance Price from: $%.2f\nDiscount: %.1f%%\nPage: %d\n---------------------------",
+        return String.format("Product Name: %s\n%s\nPrice: $%.2f\nClearance Price from: $%.2f\nDiscount: %.1f%%\nPage: %d\n---------------------------",
                 name, sku, price, clearancePrice, getDiscountPercentage(), page);
     }
 
